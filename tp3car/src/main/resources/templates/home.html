@@ -30,18 +30,5 @@
         <button type="button" onclick="getOccurrences()">Rechercher</button>
     </form>
     
-    <script>
-        function getOccurrences() {
-            var word = document.getElementById("wordInput").value;
-            fetch("/getOccurrences?word=" + word)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("mot").innerText = word;
-                    document.getElementById("nbrOccu").innerText = data;
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
-
 </body>
 </html>
