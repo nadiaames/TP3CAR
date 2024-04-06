@@ -16,19 +16,20 @@
     <h2>Fichier à analyser</h2>
     <form action="/addFile" method="post" enctype="multipart/form-data">
         <label for="fileInput">Fichier :</label>
-        <input type="file" id="fileInput" name="fileInput">
+        <input type="file" id="fileInput" name="fileInput" accept=".txt" >
     	<button type="submit">Submit</button>
 	</form>
 
     <h2>Résultat</h2>
-    <p>Mot : <span id="mot"></span></p>
-    <p>Nombres d'occurrences : <span id="nbrOccu"></span></p>
     
-    <form id="occurrencesForm">
-        <label for="wordInput">Mot :</label>
-        <input type="text" id="wordInput" name="word">
-        <button type="button" onclick="getOccurrences()">Rechercher</button>
-    </form>
+	<form action="/getOccurrences" method="get">
+	    <label for="wordInput">Mot :</label>
+	    <input type="text" name="word">
+	    <button type="submit">Rechercher</button>
+	
+		<p>Mot : <span th:text="${word}"></span></p>
+		<p>Nombres d'occurrences : <span th:text="${wordCount}"></span></p>
+	</form>
     
 </body>
 </html>

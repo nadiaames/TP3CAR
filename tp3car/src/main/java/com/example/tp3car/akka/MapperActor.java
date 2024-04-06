@@ -11,27 +11,18 @@ public class MapperActor extends UntypedActor {
         this.reducer2 = reducer2;
     }
 
-
-
     @Override
     public void onReceive(Object message) throws Throwable {
-        if (message instanceof ReducerMessage) {
-            this.reducer1.tell(new WordsMessage(""), getSelf());
-            this.reducer2.tell(new WordsMessage(""), getSelf());
-        } else if (message instanceof LinesMessage lineMessage ) {
-            String[] mots = lineMessage.line().split(" "); 
-            for (String mot : mots) {
-                partition(mot).tell(new WordsMessage(mot), getSelf());
+        if (message instanceof LinesMessage) {
+            LinesMessage linesMessage = (LinesMessage) message;
+            String[] words = linesMessage.line().split("\\s+"); 
+            for (String word : words) {
+                char firstLetter = Character.toLowerCase(word.charAt(0));
+                ActorRef reducer = firstLetter >= 'a' && firstLetter <= 'm' ? reducer1 : reducer2;
+                reducer.tell(new WordsMessage(word), getSelf());
             }
         }
     }
 
-    private ActorRef partition(String word) {
-        char firstLetter = Character.toLowerCase(word.charAt(0));
-        if (firstLetter >= 'a' && firstLetter <= 'l') {
-            return reducer1;
-        } else {
-            return reducer2;
-        }
-    }
+
 }

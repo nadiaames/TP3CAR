@@ -1,10 +1,13 @@
 package com.example.tp3car.akka;
 import akka.actor.UntypedActor;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ReducerActor extends UntypedActor {
-    private final Map<String, Integer> wordCounts = new HashMap<>();
+    private final Map<String, Integer> wordOccurrences;
+
+    public ReducerActor(Map<String, Integer> wordOccurrences) {
+        this.wordOccurrences = wordOccurrences;
+    }
 
     @Override
     public void onReceive(Object message) throws Throwable {
@@ -17,11 +20,7 @@ public class ReducerActor extends UntypedActor {
     }
 
     private void processWord(String word) {
-        int count = wordCounts.getOrDefault(word, 0);
-        wordCounts.put(word, count + 1);
-    }
-
-    public Map<String, Integer> getWordCounts() {
-        return new HashMap<>(wordCounts);
+        int count = wordOccurrences.getOrDefault(word, 0);
+        wordOccurrences.put(word, count + 1);
     }
 }

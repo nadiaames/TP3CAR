@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +16,7 @@ public class AkkaController {
 
     private final AkkaService akkaService;
 
-    @Autowired
+    @Autowired 
     public AkkaController(AkkaService akkaService) {
         this.akkaService = akkaService;
     }
@@ -51,18 +52,12 @@ public class AkkaController {
     }
     
     @GetMapping("/getOccurrences")
-    @ResponseBody
-    public String getOccurrences(@RequestParam("word") String word) {
+    public String getOccurrences(@RequestParam("word") String word, Model model) {
         Map<String, Integer> occurrences = akkaService.getWordOccurrences(word);
-        StringBuilder responseBuilder = new StringBuilder();
-        if (occurrences.containsKey(word)) {
-            responseBuilder.append(occurrences.get(word));
-        } else {
-            responseBuilder.append("0");
-        }
-        
-        return responseBuilder.toString();
+        int wordCount = occurrences.getOrDefault(word, 0);
+        model.addAttribute("word", word);
+        model.addAttribute("wordCount", wordCount);
+        return "home";
     }
-
-
+    
 }
